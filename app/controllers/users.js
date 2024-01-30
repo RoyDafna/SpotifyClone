@@ -38,7 +38,7 @@ module.exports = {
         throw new Error("Request body is invalid");
       }
 
-      res.status(200);
+      res.status(200).send();
     } catch (err) {
       res.status(500).send(err);
     }

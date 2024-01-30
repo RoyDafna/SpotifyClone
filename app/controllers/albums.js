@@ -3,7 +3,7 @@ const {
   addAlbum,
   deleteAlbum,
   searchByName,
-  searchByGenres,
+  searchByGenre,
   searchByDateRange,
 } = require("../services/albums");
 
@@ -44,8 +44,8 @@ module.exports = {
 
         if (query.hasOwnProperty("name")) {
           albumsFound = await searchByName(query.name, query.page);
-        } else if (query.hasOwnProperty("genres")) {
-          albumsFound = await searchByGenres(query.genres, query.page);
+        } else if (query.hasOwnProperty("genre")) {
+          albumsFound = await searchByGenre(query.genre, query.page);
         } else if (
           query.hasOwnProperty("startDate") &&
           query.hasOwnProperty("endDate")

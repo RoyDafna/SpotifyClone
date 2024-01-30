@@ -4,7 +4,7 @@ const {
   deleteSong,
   countListen,
   searchByName,
-  searchByGenres,
+  searchByGenre,
   searchByDateRange,
   getTopTenSongs,
 } = require("../services/songs");
@@ -39,8 +39,8 @@ module.exports = {
   countListen: async (req, res) => {
     try {
       const songID = req.params.id;
-      const song = await countListen(songID);
-      res.json(song);
+      await countListen(songID);
+      res.status(200).send();
     } catch (err) {
       res.status(500).send(err);
     }
@@ -57,15 +57,15 @@ module.exports = {
 
         if (query.hasOwnProperty("name")) {
           songsFound = await searchByName(query.name, query.page);
-        } else if (query.hasOwnProperty("genres")) {
-          songsFound = await searchByGenres(query.genres, query.page);
+        } else if (query.hasOwnProperty("genre")) {
+          songsFound = await searchByGenre(query.genre, query.page);
         } else if (
           query.hasOwnProperty("startDate") &&
           query.hasOwnProperty("endDate")
         ) {
           songsFound = await searchByDateRange(
-            query.startDate,
-            query.endDate,
+            new Date(Number(query.startDate)),
+            new Date(Number(query.endDate)),
             query.page
           );
         }
@@ -77,7 +77,7 @@ module.exports = {
   },
   getTopTen: async (req, res) => {
     try {
-      const topTenSongs = await getTopTenSongs(songID);
+      const topTenSongs = await getTopTenSongs();
       res.json(topTenSongs);
     } catch (err) {
       res.status(500).send(err);

@@ -4,7 +4,7 @@ const {
   deleteArtist,
   updateArtist,
   searchByName,
-  searchByGenres,
+  searchByGenre,
   searchArtistSongs,
   searchArtistAlbums,
 } = require("../services/artists");
@@ -56,8 +56,8 @@ module.exports = {
 
         if (query.hasOwnProperty("name")) {
           artistsFound = await searchByName(query.name, query.page);
-        } else if (query.hasOwnProperty("genres")) {
-          artistsFound = await searchByGenres(query.genres, query.page);
+        } else if (query.hasOwnProperty("genre")) {
+          artistsFound = await searchByGenre(query.genre, query.page);
         }
       }
       res.json(artistsFound);
