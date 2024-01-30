@@ -27,41 +27,31 @@ module.exports = {
       res.status(500).send(err);
     }
   },
-  likeGenre: async (req, res) => {
+  likeContent: async (req, res) => {
     try {
-      const userID = req.params.userID;
-      const genreName = req.params.genreName;
-      const user = await likeGenre(userID, genreName);
+      const { userID, contentType, content } = req.body;
+      let user;
+      if (contentType.equals("genre")) {
+        user = await likeGenre(userID, content);
+      } else if (contentType.equals("song")) {
+        user = await likeSong(userID, content);
+      }
+
       res.json(user);
     } catch (err) {
       res.status(500).send(err);
     }
   },
-  likeSong: async (req, res) => {
+  unlikeContent: async (req, res) => {
     try {
-      const userID = req.params.userID;
-      const songID = req.params.songID;
-      const user = await likeSong(userID, songID);
-      res.json(user);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  },
-  unlikeGenre: async (req, res) => {
-    try {
-      const userID = req.params.userID;
-      const genreName = req.params.genreName;
-      const user = await unlikeGenre(userID, genreName);
-      res.json(user);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  },
-  unlikeSong: async (req, res) => {
-    try {
-      const userID = req.params.userID;
-      const songID = req.params.songID;
-      const user = await unlikeSong(userID, songID);
+      const { userID, contentType, content } = req.body;
+      let user;
+      if (contentType.equals("genre")) {
+        user = await unlikeGenre(userID, content);
+      } else if (contentType.equals("song")) {
+        user = await unlikeSong(userID, content);
+      }
+
       res.json(user);
     } catch (err) {
       res.status(500).send(err);
