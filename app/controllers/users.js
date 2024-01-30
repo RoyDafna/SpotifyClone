@@ -30,14 +30,15 @@ module.exports = {
   likeContent: async (req, res) => {
     try {
       const { userID, contentType, content } = req.body;
-      let user;
       if (contentType.equals("genre")) {
-        user = await likeGenre(userID, content);
+        await likeGenre(userID, content);
       } else if (contentType.equals("song")) {
-        user = await likeSong(userID, content);
+        await likeSong(userID, content);
+      } else {
+        throw new Error("Request body is invalid");
       }
 
-      res.json(user);
+      res.status(200);
     } catch (err) {
       res.status(500).send(err);
     }
@@ -45,14 +46,15 @@ module.exports = {
   unlikeContent: async (req, res) => {
     try {
       const { userID, contentType, content } = req.body;
-      let user;
       if (contentType.equals("genre")) {
-        user = await unlikeGenre(userID, content);
+        await unlikeGenre(userID, content);
       } else if (contentType.equals("song")) {
-        user = await unlikeSong(userID, content);
+        await unlikeSong(userID, content);
+      } else {
+        throw new Error("Request body is invalid");
       }
 
-      res.json(user);
+      res.status(200);
     } catch (err) {
       res.status(500).send(err);
     }
