@@ -10,7 +10,7 @@ router.get("/", cacheNoStore, controller.searchArtists);
 Search by name (paging)
 Search by genres (paging)
 */
-router.get("/:id", cacheNoStore, controller.searchArtistContent);
+router.get("/:name", cacheNoStore, controller.searchArtistContent);
 /* TODO:
 Search songs (paging)
 Search albums (paging)

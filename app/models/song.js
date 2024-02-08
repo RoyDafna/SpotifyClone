@@ -6,7 +6,7 @@ const songSchema = new Schema({
   songEmbed: String,
   name: String,
   genre: { type: String, index: true },
-  artistID: String, //CHANGE
+  artistID: ObjectId, 
   albumID: String, //CHANGE
   pictureURL: String,
   releaseDate: Date,

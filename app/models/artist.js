@@ -5,7 +5,7 @@ const artistSchema = new Schema({
   name: String,
   mainGenre: String,
   pictureURL: String,
-  birthday: Date,
+  birthdate: Date,
 });
 
 const Artist = model("Artist", artistSchema);

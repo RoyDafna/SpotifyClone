@@ -7,13 +7,14 @@ const {
   searchByGenre,
   searchArtistSongs,
   searchArtistAlbums,
-} = require("../services/artists");
+} = require("../services/artists.js");
 
 module.exports = {
   addArtist: async (req, res) => {
     try {
-      const { name, mainGenre, pictureURL, birthday } = req.body;
-      const newArtist = await addArtist(name, mainGenre, pictureURL, birthday);
+      const { name, mainGenre, pictureURL, birthYear, birthMonth, birthDay } = req.body;
+      const birthdate = new Date(birthYear, birthMonth - 1, birthDay, 2/*HELP*/);
+      const newArtist = await addArtist(name, mainGenre, pictureURL, birthdate);
       res.json(newArtist);
     } catch (err) {
       res.status(500).send(err);
@@ -31,13 +32,13 @@ module.exports = {
   updateArtist: async (req, res) => {
     try {
       const id = req.params.id;
-      const { name, mainGenre, pictureURL, birthday } = req.body;
+      const { name, mainGenre, pictureURL, birthdate } = req.body;
       const artist = await updateArtist(
         id,
         name,
         mainGenre,
         pictureURL,
-        birthday
+        birthdate
       );
       res.json(artist);
     } catch (err) {
@@ -67,7 +68,7 @@ module.exports = {
   },
   searchArtistContent: async (req, res) => {
     try {
-      const artistID = req.params.id;
+      const artistName = req.params.name;
 
       if (Object.keys(req.query).length == 0) {
         throw new Error("No query was given");
@@ -75,9 +76,9 @@ module.exports = {
         query = { ...query, ...req.query };
 
         if (query.hasOwnProperty("songName")) {
-          artistsFound = await searchArtistSongs(artistID, query.songName, query.page);
+          artistsFound = await searchArtistSongs(artistName, query.songName, query.page);
         } else if (query.hasOwnProperty("albumName")) {
-          artistsFound = await searchArtistAlbums(artistID, query.albumName, query.page);
+          artistsFound = await searchArtistAlbums(artistName, query.albumName, query.page);
         }
       }
       res.json(artistsFound);
