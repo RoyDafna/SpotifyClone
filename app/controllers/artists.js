@@ -6,14 +6,19 @@ const {
   searchByName,
   searchByGenre,
   searchArtistSongs,
-  searchArtistAlbums,
 } = require("../services/artists.js");
 
 module.exports = {
   addArtist: async (req, res) => {
     try {
-      const { name, mainGenre, pictureURL, birthYear, birthMonth, birthDay } = req.body;
-      const birthdate = new Date(birthYear, birthMonth - 1, birthDay, 2/*HELP*/);
+      const { name, mainGenre, pictureURL, birthYear, birthMonth, birthDay } =
+        req.body;
+      const birthdate = new Date(
+        birthYear,
+        birthMonth - 1,
+        birthDay,
+        2 /*HELP*/
+      );
       const newArtist = await addArtist(name, mainGenre, pictureURL, birthdate);
       res.json(newArtist);
     } catch (err) {
@@ -69,18 +74,9 @@ module.exports = {
   searchArtistContent: async (req, res) => {
     try {
       const artistName = req.params.name;
+      const songName = req.params.songName;
 
-      if (Object.keys(req.query).length == 0) {
-        throw new Error("No query was given");
-      } else {
-        query = { ...query, ...req.query };
-
-        if (query.hasOwnProperty("songName")) {
-          artistsFound = await searchArtistSongs(artistName, query.songName, query.page);
-        } else if (query.hasOwnProperty("albumName")) {
-          artistsFound = await searchArtistAlbums(artistName, query.albumName, query.page);
-        }
-      }
+      artistsFound = await searchArtistSongs(artistName, songName);
       res.json(artistsFound);
     } catch (err) {
       res.status(500).send(err);

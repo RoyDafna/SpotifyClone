@@ -1,5 +1,5 @@
 const Artist = require("../models/artist");
-const Song = require("../models/song")
+const { aggregate } = require("../models/song");
 const PAGE_SIZE = 10;
 
 module.exports = {
@@ -36,8 +36,8 @@ module.exports = {
       .limit(PAGE_SIZE);
     return artists;
   },
-  searchArtistSongs: async (artistName, songName) => {
-    const songs = await Song.aggregate([
+  searchArtistSongs: async (artistName, songName, page) => {
+    const songs = await Artist.aggregate([
       {
         $match: {
           $text: {
@@ -70,7 +70,11 @@ module.exports = {
           totalListens: 1,
         },
       },
-    ]);
+    ])
+      .skip(PAGE_SIZE * (page - 1))
+      .limit(PAGE_SIZE);
+
     return songs;
   },
+  searchArtistAlbums: async (artistName, albumName, page) => {},
 };
