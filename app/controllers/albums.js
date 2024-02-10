@@ -50,9 +50,9 @@ module.exports = {
           query.hasOwnProperty("startDate") &&
           query.hasOwnProperty("endDate")
         ) {
-          songsFound = await searchByDateRange(
-            query.startDate,
-            query.endDate,
+          albumsFound = await searchByDateRange(
+            new Date(Number(query.startDate)),
+            new Date(Number(query.endDate)),
             query.page
           );
         }

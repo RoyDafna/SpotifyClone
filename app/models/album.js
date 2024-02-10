@@ -11,5 +11,6 @@ const albumSchema = new Schema({
   songIDs: [ObjectId],
 });
 
+albumSchema.index({ name: "text" });
 const Album = model("Album", albumSchema);
 module.exports = Album;
