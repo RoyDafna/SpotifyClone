@@ -6,7 +6,7 @@ const userSchema = new Schema({
   username: String,
   password: String,
   likedSongsIDs: [ObjectId],
-  likedGenres: [ObjectId],
+  likedGenres: [String],
 });
 
 const User = model("User", userSchema);

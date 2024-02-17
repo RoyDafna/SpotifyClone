@@ -27,35 +27,44 @@ module.exports = {
       res.status(500).send(err);
     }
   },
-  likeContent: async (req, res) => {
+  likeSong: async (req, res) => {
     try {
-      const { userID, contentType, content } = req.body;
-      if (contentType.equals("genre")) {
-        await likeGenre(userID, content);
-      } else if (contentType.equals("song")) {
-        await likeSong(userID, content);
-      } else {
-        throw new Error("Request body is invalid");
-      }
+      const { userID, songID } = req.body;
+      await likeSong(userID, songID);
 
       res.status(200).send();
     } catch (err) {
       res.status(500).send(err);
     }
   },
-  unlikeContent: async (req, res) => {
+  unlikeSong: async (req, res) => {
     try {
-      const { userID, contentType, content } = req.body;
-      if (contentType.equals("genre")) {
-        await unlikeGenre(userID, content);
-      } else if (contentType.equals("song")) {
-        await unlikeSong(userID, content);
-      } else {
-        throw new Error("Request body is invalid");
-      }
+      const { userID, songID } = req.body;
+      await unlikeSong(userID, songID);
 
-      res.status(200);
+      res.status(200).send();
     } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+  likeGenre: async (req, res) => {
+    try {
+      const { userID, genre } = req.body;
+      await likeGenre(userID, genre);
+
+      res.status(200).send();
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+  unlikeGenre: async (req, res) => {
+    try {
+      const { userID, genre } = req.body;
+      await unlikeGenre(userID, genre);
+
+      res.status(200).send();
+    } catch (err) {
+      console.log(err)
       res.status(500).send(err);
     }
   },

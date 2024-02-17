@@ -27,14 +27,14 @@ module.exports = {
   unlikeGenre: async (userID, genreName) => {
     const userToUpdate = await User.findById(userID);
     userToUpdate.likedGenres = userToUpdate.likedGenres.filter(
-      (currGenre) => !currGenre.equals(genreName)
+      (currGenre) => currGenre != genreName
     );
     return userToUpdate.save();
   },
   unlikeSong: async (userID, songID) => {
     const userToUpdate = await User.findById(userID);
     userToUpdate.likedSongsIDs = userToUpdate.likedSongsIDs.filter(
-      (currSong) => !currSong.equals(songID)
+      (currSong) => currSong != songID
     );
     return userToUpdate.save();
   },
