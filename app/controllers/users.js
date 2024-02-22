@@ -6,6 +6,7 @@ const {
   unlikeGenre,
   likeSong,
   unlikeSong,
+  getUser,
 } = require("../services/users");
 
 module.exports = {
@@ -14,6 +15,14 @@ module.exports = {
       const { username, password } = req.body;
       const newUser = await addUser(username, password);
       res.json(newUser);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const { username, password } = req.params;
+      const user = await getUser(username, password);
     } catch (err) {
       res.status(500).send(err);
     }
@@ -64,7 +73,7 @@ module.exports = {
 
       res.status(200).send();
     } catch (err) {
-      console.log(err)
+      console.log(err);
       res.status(500).send(err);
     }
   },

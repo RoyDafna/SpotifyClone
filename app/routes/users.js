@@ -3,6 +3,7 @@ const router = require("express").Router();
 const cacheNoStore = require("../middlewares/cacheNoStore");
 
 router.post("/", cacheNoStore, controller.addUser);
+router.get("/", cacheNoStore, controller.getUser);
 router.delete("/:id", cacheNoStore, controller.deleteUser);
 router.post("/likeSong/", cacheNoStore, controller.likeSong);
 router.post("/likeGenre/", cacheNoStore, controller.likeGenre);

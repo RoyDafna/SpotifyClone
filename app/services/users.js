@@ -11,6 +11,9 @@ module.exports = {
     });
     return newUser.save();
   },
+  getUser: async (username, password) => {
+    return User.find({ username: username, password: password });
+  },
   deleteUser: async (id) => {
     return User.findByIdAndDelete(id);
   },
