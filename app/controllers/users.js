@@ -14,15 +14,22 @@ module.exports = {
     try {
       const { username, password } = req.body;
       const newUser = await addUser(username, password);
+      if(newUser == null)
+      {
+        res.status(200).send("User Exists");
+      }
+      else{
       res.json(newUser);
+      }
     } catch (err) {
       res.status(500).send(err);
     }
   },
   getUser: async (req, res) => {
     try {
-      const { username, password } = req.params;
+      const { username, password } = req.query;
       const user = await getUser(username, password);
+      res.json(user);
     } catch (err) {
       res.status(500).send(err);
     }
