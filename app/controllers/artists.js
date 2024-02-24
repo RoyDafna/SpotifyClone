@@ -5,10 +5,20 @@ const {
   updateArtist,
   searchByName,
   searchByGenre,
+  searchArtistContent,
   searchArtistSongs,
 } = require("../services/artists.js");
 
 module.exports = {
+  searchArtistSongs: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const artistSongs = await searchArtistSongs(id);
+      res.json(artistSongs);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
   addArtist: async (req, res) => {
     try {
       const { name, mainGenre, pictureURL, birthYear, birthMonth, birthDay } =
@@ -76,7 +86,7 @@ module.exports = {
       const artistName = req.params.name;
       const songName = req.params.songName;
 
-      artistsFound = await searchArtistSongs(artistName, songName);
+      artistsFound = await searchArtistContent(artistName, songName);
       res.json(artistsFound);
     } catch (err) {
       res.status(500).send(err);

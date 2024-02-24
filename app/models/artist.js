@@ -8,5 +8,6 @@ const artistSchema = new Schema({
   birthdate: Date,
 });
 
+artistSchema.index({ name: "text" });
 const Artist = model("Artist", artistSchema);
 module.exports = Artist;

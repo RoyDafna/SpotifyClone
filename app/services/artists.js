@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const Artist = require("../models/artist");
 const Song = require("../models/song")
 const PAGE_SIZE = 10;
@@ -11,6 +12,10 @@ module.exports = {
       birthdate,
     });
     return newArtist.save();
+  },
+  searchArtistSongs: async(id)=>{
+    const artistSongs = await Song.find({artistID: new ObjectId(id)});
+    return artistSongs;
   },
   updateArtist: async (id, name, mainGenre, pictureURL, birthdate) => {
     const artistToUpdate = await Artist.findById(id);
@@ -36,7 +41,7 @@ module.exports = {
       .limit(PAGE_SIZE);
     return artists;
   },
-  searchArtistSongs: async (artistName, songName) => {
+  searchArtistContent: async (artistName, songName) => {
     const songs = await Song.aggregate([
       {
         $match: {
