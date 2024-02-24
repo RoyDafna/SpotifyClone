@@ -7,19 +7,29 @@ const {
   likeSong,
   unlikeSong,
   getUser,
+  getLikedSongs,
 } = require("../services/users");
 
 module.exports = {
+  getLikedSongs: async (req, res) => {
+    try {
+      const userID = req.params.id;
+      const likedSongs = await getLikedSongs(userID);
+      res.json(likedSongs);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  },
+
   addUser: async (req, res) => {
     try {
       const { username, password } = req.body;
       const newUser = await addUser(username, password);
-      if(newUser == null)
-      {
+      if (newUser == null) {
         res.status(200).send("User Exists");
-      }
-      else{
-      res.json(newUser);
+      } else {
+        res.json(newUser);
       }
     } catch (err) {
       res.status(500).send(err);

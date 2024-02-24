@@ -1,7 +1,49 @@
+const { ObjectId } = require("mongodb");
 const User = require("../models/user");
 const PAGE_SIZE = 10;
 
 module.exports = {
+  getLikedSongs: async (userID) => {
+    const likedSongs = await User.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(userID),
+        },
+      },
+      {
+        $unwind: {
+          path: "$likedSongsIDs",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $project: {
+          likedSongsIDs: 1,
+          _id: 0,
+        },
+      },
+      {
+        $lookup: {
+          from: "songs",
+          localField: "likedSongsIDs",
+          foreignField: "_id",
+          as: "likedSong",
+        },
+      },
+      {
+        $project: {
+          likedSong: 1,
+        },
+      },
+      {
+        $unwind: {
+          path: "$likedSong",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+    ]);
+    return likedSongs;
+  },
   addUser: async (username, password) => {
     const user = await User.find({ username });
 
