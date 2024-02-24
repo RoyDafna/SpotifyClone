@@ -3,7 +3,7 @@ const User = require("../models/user");
 const PAGE_SIZE = 10;
 
 module.exports = {
-  getLikedSongs: async (userID) => {
+  /*getLikedSongs: async (userID) => {
     const likedSongs = await User.aggregate([
       {
         $match: {
@@ -43,7 +43,25 @@ module.exports = {
       },
     ]);
     return likedSongs;
+  },*/
+
+  getLikedSongs: async (userID) => {
+    const likedSongs = await User.aggregate([
+      {
+        '$match': {
+          '_id': new ObjectId(userID)
+        }
+      }, {
+        '$project': {
+          'likedSongsIDs': 1, 
+          '_id': 0
+        }
+      }
+    ]);
+
+    return likedSongs;
   },
+
   addUser: async (username, password) => {
     const user = await User.find({ username });
 
