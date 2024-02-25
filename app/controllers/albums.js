@@ -5,9 +5,30 @@ const {
   searchByName,
   searchByGenre,
   searchByDateRange,
+  searchAlbumSongs,
+  searchAlbumByName,
 } = require("../services/albums");
 
 module.exports = {
+  searchAlbumByName: async (req, res) => {
+    try {
+      const name = req.params.name;
+      const albums = await searchAlbumByName(name);
+      res.json(albums);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+  searchAlbumSongs: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const albumSongs = await searchAlbumSongs(id);
+      res.json(albumSongs);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
   addAlbum: async (req, res) => {
     try {
       const { name, genre, artistID, pictureURL, songIDs } = req.body;

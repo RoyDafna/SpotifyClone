@@ -1,7 +1,50 @@
+const { ObjectId } = require("mongodb");
 const Album = require("../models/album");
 const PAGE_SIZE = 10;
 
 module.exports = {
+  searchAlbumSongs: async (albumID) => {
+    const albumSongs = await Album.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(albumID),
+        },
+      },
+      {
+        $unwind: {
+          path: "$songIDs",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $lookup: {
+          from: "songs",
+          localField: "songIDs",
+          foreignField: "_id",
+          as: "song",
+        },
+      },
+      {
+        $unwind: {
+          path: "$song",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $project: {
+          song: 1,
+          _id: 0,
+        },
+      },
+    ]);
+    return albumSongs;
+  },
+
+  searchAlbumByName: async (name) => {
+    const albumSongs = await Album.find({ $text: { $search: name } });
+    return albumSongs;
+  },
+
   addAlbum: async (name, genre, artistID, pictureURL, songIDs) => {
     const newAlbum = new Album({
       name,

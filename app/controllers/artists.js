@@ -7,9 +7,19 @@ const {
   searchByGenre,
   searchArtistContent,
   searchArtistSongs,
+  getArtistByID,
 } = require("../services/artists.js");
 
 module.exports = {
+  getArtistByID: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const artist = await getArtistByID(id);
+      res.json(artist);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
   searchArtistSongs: async (req, res) => {
     try {
       const id = req.params.id;

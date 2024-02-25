@@ -1,9 +1,14 @@
 const { ObjectId } = require("mongodb");
 const Artist = require("../models/artist");
-const Song = require("../models/song")
+const Song = require("../models/song");
 const PAGE_SIZE = 10;
 
 module.exports = {
+  getArtistByID: async (id) => {
+    const artist = await Artist.findById(id);
+    return artist;
+  },
+
   addArtist: async (name, mainGenre, pictureURL, birthdate) => {
     const newArtist = new Artist({
       name,
@@ -13,8 +18,8 @@ module.exports = {
     });
     return newArtist.save();
   },
-  searchArtistSongs: async(id)=>{
-    const artistSongs = await Song.find({artistID: new ObjectId(id)});
+  searchArtistSongs: async (id) => {
+    const artistSongs = await Song.find({ artistID: new ObjectId(id) });
     return artistSongs;
   },
   updateArtist: async (id, name, mainGenre, pictureURL, birthdate) => {
