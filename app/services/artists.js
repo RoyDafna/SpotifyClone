@@ -1,4 +1,4 @@
-const { ObjectId } = require("mongodb");
+const mongoose = require("mongoose");
 const Artist = require("../models/artist");
 const Song = require("../models/song");
 const PAGE_SIZE = 10;
@@ -19,7 +19,9 @@ module.exports = {
     return newArtist.save();
   },
   searchArtistSongs: async (id) => {
-    const artistSongs = await Song.find({ artistID: new ObjectId(id) });
+    const artistSongs = await Song.find({
+      artistID: new mongoose.Types.ObjectId(id),
+    });
     return artistSongs;
   },
   updateArtist: async (id, name, mainGenre, pictureURL, birthdate) => {

@@ -1,19 +1,13 @@
-const { ObjectId } = require("mongodb");
+const mongoose = require("mongoose");
 const User = require("../models/user");
 const PAGE_SIZE = 10;
 
 module.exports = {
-  /*getLikedSongs: async (userID) => {
+  getLikedSongs: async (userID) => {
     const likedSongs = await User.aggregate([
       {
         $match: {
-          _id: new ObjectId(userID),
-        },
-      },
-      {
-        $unwind: {
-          path: "$likedSongsIDs",
-          preserveNullAndEmptyArrays: false,
+          _id: new mongoose.Types.ObjectId(userID),
         },
       },
       {
@@ -22,41 +16,6 @@ module.exports = {
           _id: 0,
         },
       },
-      {
-        $lookup: {
-          from: "songs",
-          localField: "likedSongsIDs",
-          foreignField: "_id",
-          as: "likedSong",
-        },
-      },
-      {
-        $project: {
-          likedSong: 1,
-        },
-      },
-      {
-        $unwind: {
-          path: "$likedSong",
-          preserveNullAndEmptyArrays: false,
-        },
-      },
-    ]);
-    return likedSongs;
-  },*/
-
-  getLikedSongs: async (userID) => {
-    const likedSongs = await User.aggregate([
-      {
-        '$match': {
-          '_id': new ObjectId(userID)
-        }
-      }, {
-        '$project': {
-          'likedSongsIDs': 1, 
-          '_id': 0
-        }
-      }
     ]);
 
     return likedSongs;

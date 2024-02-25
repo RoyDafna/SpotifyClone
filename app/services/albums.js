@@ -1,5 +1,5 @@
-const { ObjectId } = require("mongodb");
 const Album = require("../models/album");
+const mongoose = require("mongoose")
 const PAGE_SIZE = 10;
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     const albumSongs = await Album.aggregate([
       {
         $match: {
-          _id: new ObjectId(albumID),
+          _id: new mongoose.Types.ObjectId(albumID),
         },
       },
       {
