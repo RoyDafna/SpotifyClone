@@ -7,9 +7,18 @@ const {
   searchByDateRange,
   searchAlbumSongs,
   searchAlbumByName,
+  getTopTenAlbums,
 } = require("../services/albums");
 
 module.exports = {
+  getTopTenAlbums: async (req, res) => {
+    try {
+      const albums = await getTopTenAlbums();
+      res.json(albums);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
   searchAlbumByName: async (req, res) => {
     try {
       const name = req.params.name;

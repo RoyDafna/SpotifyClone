@@ -1,8 +1,79 @@
 const Album = require("../models/album");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const PAGE_SIZE = 10;
 
 module.exports = {
+  getTopTenAlbums: async () => {
+    const albums = await Album.aggregate([
+      {
+        $unwind: {
+          path: "$songIDs",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $lookup: {
+          from: "songs",
+          localField: "songIDs",
+          foreignField: "_id",
+          as: "songDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$songDetails",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: ["$songDetails", "$$ROOT"],
+          },
+        },
+      },
+      {
+        $project: {
+          songDetails: 0,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          name: {
+            $first: "$name",
+          },
+          genre: {
+            $first: "$genre",
+          },
+          artistID: {
+            $first: "$artistID",
+          },
+          pictureURL: {
+            $first: "$pictureURL",
+          },
+          releaseDate: {
+            $first: "$releaseDate",
+          },
+          songIDs: {
+            $push: "$songIDs",
+          },
+          totalListens: {
+            $sum: "$totalListens",
+          },
+        },
+      },
+      {
+        $sort: {
+          totalListens: -1,
+        },
+      },
+      {
+        $limit: 10,
+      },
+    ]);
+    return albums;
+  },
   searchAlbumSongs: async (albumID) => {
     const albumSongs = await Album.aggregate([
       {
